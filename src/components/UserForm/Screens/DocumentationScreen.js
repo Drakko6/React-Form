@@ -1,40 +1,30 @@
 import React from "react";
 import { Grid, TextField } from "@material-ui/core";
-import { Title, SectionContainer, Subtitle, UploadButton } from "../Style";
-import SimpleFormInput from "../../SimpleFormInput";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { banks } from "../../../utils/banks";
+import {
+  Title,
+  SectionContainer,
+  Subtitle,
+  UploadButton,
+  StyledHelperText,
+} from "../Style";
+import SimpleFormInput from "../../SimpleFormInput";
 import Thumb from "../../Thumb";
+import { banks } from "../../../utils/banks";
 
 const DocumentationScreen = ({ formik }) => {
   return (
     <div>
       <div>
         <Title>Documentos y datos bancarios</Title>
-
         <Grid container xs={12}>
           <SectionContainer container xs={12}>
-            <Grid
-              xs={12}
-              style={{
-                alignItems: "center",
-                flexDirection: "column",
-                display: "flex",
-              }}
-            >
+            <Grid xs={12} className="grid-centered">
               <Subtitle>Documentación</Subtitle>
 
               <SimpleFormInput size={12} label="Comprobante de domicilio">
                 <Grid container>
-                  <Grid
-                    item
-                    xs={6}
-                    style={{
-                      justifyContent: "center",
-                      flexDirection: "column",
-                      display: "flex",
-                    }}
-                  >
+                  <Grid item xs={6} className="grid-item-centered">
                     <input
                       id="imagen"
                       style={{ display: "none" }}
@@ -59,12 +49,15 @@ const DocumentationScreen = ({ formik }) => {
                   <Grid item xs={6}>
                     <Thumb file={formik.values.addressProof} />
                   </Grid>
+                  <StyledHelperText>
+                    {formik.errors.addressProof}
+                  </StyledHelperText>
                 </Grid>
               </SimpleFormInput>
 
               <SimpleFormInput size={12} label="Teléfono">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   variant="outlined"
@@ -78,7 +71,7 @@ const DocumentationScreen = ({ formik }) => {
 
               <SimpleFormInput size={12} label="Correo electrónico">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   variant="outlined"
@@ -93,19 +86,12 @@ const DocumentationScreen = ({ formik }) => {
           </SectionContainer>
 
           <SectionContainer container xs={12}>
-            <Grid
-              xs={12}
-              style={{
-                alignItems: "center",
-                flexDirection: "column",
-                display: "flex",
-              }}
-            >
+            <Grid xs={12} className="grid-centered">
               <Subtitle>Cuenta Bancaria</Subtitle>
 
               <SimpleFormInput size={12} label="CLABE">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   variant="outlined"
@@ -120,7 +106,7 @@ const DocumentationScreen = ({ formik }) => {
               <SimpleFormInput size={12} label="Banco">
                 <Autocomplete
                   freeSolo
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   options={banks.map((b) => b.marca)}
                   size="small"
                   getOptionLabel={(option) => option}
@@ -131,10 +117,14 @@ const DocumentationScreen = ({ formik }) => {
                   }}
                   name={`bank`}
                   value={formik.values.bank}
-                  error={Boolean(formik.errors.bank)}
-                  helperText={formik.errors.bank}
                   renderInput={(params) => (
-                    <TextField {...params} label="Banco" variant="outlined" />
+                    <TextField
+                      {...params}
+                      label="Banco"
+                      variant="outlined"
+                      error={Boolean(formik.errors.bank)}
+                      helperText={formik.errors.bank}
+                    />
                   )}
                 />
               </SimpleFormInput>

@@ -1,7 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
-import { Grid, Step, StepButton } from "@material-ui/core";
+import React, { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { useFormik } from "formik";
+import { Grid, Step, StepButton } from "@material-ui/core";
 import { CustomConnector } from "./CustomConnector";
 import {
   StyledContainer,
@@ -16,19 +17,18 @@ import {
   SavingContainer,
   SavingLoading,
 } from "./Style";
-import { checkCompletedSteps } from "./functions";
 import GeneralScreen from "./Screens/GeneralScreen";
 import ParticularScreen from "./Screens/ParticularScreen";
 import DocumentationScreen from "./Screens/DocumentationScreen";
 import RepresentativeScreen from "./Screens/RepresentativeScreen";
 import BeneficiaryScreen from "./Screens/BeneficiaryScreen";
-import axios from "axios";
-import { useFormik } from "formik";
+import { checkCompletedSteps } from "./functions";
 import { ValidationSchema } from "./types";
 
 const UserForm = ({ steps, setShowModal, setOnSaving, onSaving }) => {
-  const [activeStep, setActiveStep] = useState(0);
+  const screenRef = useRef(null);
 
+  const [activeStep, setActiveStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([
     false,
     false,
@@ -57,6 +57,11 @@ const UserForm = ({ steps, setShowModal, setOnSaving, onSaving }) => {
       userCity: "",
       userState: "",
       userCountry: "",
+      addressProof: undefined,
+      phone: "",
+      userEmail: "",
+      clabe: "",
+      bank: "",
       representativeStreet: "",
       representativeExtNumber: "",
       representativeIntNumber: "",
@@ -66,13 +71,8 @@ const UserForm = ({ steps, setShowModal, setOnSaving, onSaving }) => {
       representativeCity: "",
       representativeState: "",
       representativeCountry: "",
-      addressProof: undefined,
-      phone: "",
-      userEmail: "",
       representativePhone: "",
       representativeEmail: "",
-      clabe: "",
-      bank: "",
       representativeName: "",
       representativeGender: "",
       representativeMaritalStatus: "",
@@ -114,80 +114,61 @@ const UserForm = ({ steps, setShowModal, setOnSaving, onSaving }) => {
     setCountries(countries.data.map((c) => c.name));
   };
   const handleChangeStep = (sum, i) => {
-    switch (activeStep) {
-      case 0:
-        if (
-          !formik.errors.business &&
-          !formik.errors.commercialName &
-            !formik.errors.createDate &
-            !formik.errors.industry &
-            !formik.errors.regime &
-            !formik.errors.startDate &
-            !formik.errors.userNacionality &
-            !formik.errors.userRFC
-        ) {
-          if (i >= 0) {
-            setActiveStep(i);
-          } else {
-            setActiveStep((prevActiveStep) => prevActiveStep + sum);
-          }
-        }
-        break;
-
-      case 1:
-        if (
-          !formik.errors.userStreet &&
-          !formik.errors.userExtNumber &
-            !formik.errors.userCP &
-            !formik.errors.userDistrict &
-            !formik.errors.userMunicipality &
-            !formik.errors.userCity &
-            !formik.errors.userState &
-            !formik.errors.userCountry
-        ) {
-          if (i >= 0) {
-            setActiveStep(i);
-          } else {
-            setActiveStep((prevActiveStep) => prevActiveStep + sum);
-          }
-        }
-        break;
-      case 2:
-        if (
-          !formik.errors.addressProof &&
-          !formik.errors.phone &
-            !formik.errors.userEmail &
-            !formik.errors.clabe &
-            !formik.errors.bank
-        ) {
-          if (i >= 0) {
-            setActiveStep(i);
-          } else {
-            setActiveStep((prevActiveStep) => prevActiveStep + sum);
-          }
-        }
-        break;
-      default:
-        if (i >= 0) {
-          setActiveStep(i);
-        } else {
-          setActiveStep((prevActiveStep) => prevActiveStep + sum);
-        }
-        break;
+    if (i >= 0) {
+      setActiveStep(i);
+    } else {
+      setActiveStep((prevActiveStep) => prevActiveStep + sum);
     }
+    screenRef.current.scrollTop = 0;
     checkCompletedSteps(activeStep, completedSteps, setCompletedSteps, formik);
   };
-
   const saveUser = () => {
-    if (completedSteps.every((step) => step)) {
-      setOnSaving(true);
+    if (
+      !!formik.values.beneficiaryName &
+      !!formik.values.beneficiaryGender &
+      !!formik.values.beneficiaryBirthday &
+      !!formik.values.beneficiaryCURP &
+      !!formik.values.beneficiaryPhone &
+      !!formik.values.beneficiaryEmail &
+      !!formik.values.beneficiaryStreet &
+      !!formik.values.beneficiaryExtNumber &
+      !!formik.values.beneficiaryCP &
+      !!formik.values.beneficiaryDistrict &
+      !!formik.values.beneficiaryMunicipality &
+      !!formik.values.beneficiaryCity &
+      !!formik.values.beneficiaryState &
+      !!formik.values.beneficiaryCountry
+    ) {
+      completedSteps.fill(true);
 
-      // TODO: Validar que no haya errores
+      if (completedSteps.every((step) => step)) {
+        setOnSaving(true);
 
-      // TODO: Meter las validaciones en campos y en funciones
+        setTimeout(() => {
+          setOnSaving(false);
+          setShowModal(false);
 
-      console.log("Guardando datos de Usuario");
+          Swal.fire({
+            icon: "success",
+            title: "Guardado",
+            text: "Usuario guardado con éxito",
+          });
+        }, 2000);
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: "Configuración incompleta",
+          text: "Los pasos no se han completado",
+        });
+      }
     } else {
+      setCompletedSteps(
+        completedSteps.map((step, i) => {
+          if (i === activeStep) return false;
+          return step;
+        })
+      );
+
       Swal.fire({
         icon: "warning",
         title: "Configuración incompleta",
@@ -222,7 +203,7 @@ const UserForm = ({ steps, setShowModal, setOnSaving, onSaving }) => {
         direction="column"
         style={{ height: "72%", justifyContent: "center" }}
       >
-        <ScreenContainer>
+        <ScreenContainer ref={screenRef}>
           {activeStep === 0 && <GeneralScreen formik={formik} />}
 
           {activeStep === 1 && (
@@ -269,7 +250,7 @@ const UserForm = ({ steps, setShowModal, setOnSaving, onSaving }) => {
                     variant="contained"
                     color="secondary"
                     disabled={onSaving}
-                    onClick={() => saveUser()}
+                    onClick={saveUser}
                   >
                     Guardar información
                     {onSaving && (

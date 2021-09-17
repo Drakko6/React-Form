@@ -7,7 +7,7 @@ import {
   Select,
   TextField,
 } from "@material-ui/core";
-import { Title, SectionContainer, Subtitle } from "../Style";
+import { Title, SectionContainer, Subtitle, StyledHelperText } from "../Style";
 import SimpleFormInput from "../../SimpleFormInput";
 import AddressComponent from "../../AddressComponent/AddressComponent";
 import { genders } from "../types";
@@ -22,66 +22,75 @@ const BeneficiaryScreen = ({ countries, formik }) => {
           <SectionContainer container xs={12}>
             <SimpleFormInput label="Nombre">
               <TextField
-                style={{ margin: 15, width: "100%" }}
+                className="input-width-80"
                 size="small"
                 required
-                // value={alertDescription}
                 label="Nombre del beneficiario"
                 variant="outlined"
-                onChange={(e) => {}}
+                name="beneficiaryName"
+                value={formik.values.beneficiaryName}
+                onChange={formik.handleChange}
+                error={Boolean(formik.errors.beneficiaryName)}
+                helperText={formik.errors.beneficiaryName}
               />
             </SimpleFormInput>
 
-            <SimpleFormInput label="Género">
+            <SimpleFormInput label="Género" size={5}>
               <FormControl
                 variant="outlined"
-                style={{ margin: 15, width: "100%" }}
+                className="input-width-80"
                 size="small"
               >
                 <InputLabel id="gender">Género</InputLabel>
-                <Select label="Género" id="gender" labelId="gender" required>
+                <Select
+                  label="Género"
+                  id="gender"
+                  labelId="gender"
+                  required
+                  name="beneficiaryGender"
+                  value={formik.values.beneficiaryGender}
+                  onChange={formik.handleChange}
+                  error={Boolean(formik.errors.beneficiaryGender)}
+                >
                   {genders.map((gen) => (
                     <MenuItem value={gen}>{gen}</MenuItem>
                   ))}
                 </Select>
+                <StyledHelperText>
+                  {formik.errors.beneficiaryGender}
+                </StyledHelperText>
               </FormControl>
             </SimpleFormInput>
 
-            <SimpleFormInput label="Fecha de nacimiento">
+            <SimpleFormInput label="Fecha de nacimiento" size={5}>
               <TextField
                 id="time"
                 label="Fecha de nacimiento"
                 type="date"
-                // defaultValue="00:00"
                 InputLabelProps={{
                   shrink: true,
                 }}
-                // inputProps={{
-                //   step: 600, // 10 min
-                //   // max: ranges[i]?.toTime,
-                // }}
-                style={{
-                  margin: 15,
-                  width: "80%",
-                }}
-                // value={ranges[i]?.fromTime}
-                // error={rangeError[i] || repeteadRanges[i]}
-                onChange={(e) => console.log(e.target.value)}
+                className="input-width-80"
+                name="beneficiaryBirthday"
+                value={formik.values.beneficiaryBirthday}
+                onChange={formik.handleChange}
+                error={Boolean(formik.errors.beneficiaryBirthday)}
+                helperText={formik.errors.beneficiaryBirthday}
               />
             </SimpleFormInput>
 
-            <SimpleFormInput label="CURP">
+            <SimpleFormInput label="CURP" size={10}>
               <TextField
-                style={{ margin: 15, width: "100%" }}
+                className="input-width-80"
                 size="small"
                 required
-                // value={alertDescription}
                 label="CURP"
                 variant="outlined"
-                onChange={(e) => {
-                  // setAlertDescription(e.target.value);
-                  // setHasEdited(true);
-                }}
+                name="beneficiaryCURP"
+                value={formik.values.beneficiaryCURP}
+                onChange={formik.handleChange}
+                error={Boolean(formik.errors.beneficiaryCURP)}
+                helperText={formik.errors.beneficiaryCURP}
               />
             </SimpleFormInput>
           </SectionContainer>
@@ -99,26 +108,28 @@ const BeneficiaryScreen = ({ countries, formik }) => {
 
               <SimpleFormInput size={12} label="Teléfono">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   variant="outlined"
-                  // value=""
-                  onChange={(e) => {
-                    console.log(e.target.value);
-                  }}
+                  name="beneficiaryPhone"
+                  value={formik.values.beneficiaryPhone}
+                  onChange={formik.handleChange}
+                  error={Boolean(formik.errors.beneficiaryPhone)}
+                  helperText={formik.errors.beneficiaryPhone}
                 />
               </SimpleFormInput>
               <SimpleFormInput size={12} label="Correo electrónico">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   variant="outlined"
-                  // value=""
-                  onChange={(e) => {
-                    console.log(e.target.value);
-                  }}
+                  name="beneficiaryEmail"
+                  value={formik.values.beneficiaryEmail}
+                  onChange={formik.handleChange}
+                  error={Boolean(formik.errors.beneficiaryEmail)}
+                  helperText={formik.errors.beneficiaryEmail}
                 />
               </SimpleFormInput>
             </Grid>

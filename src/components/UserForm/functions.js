@@ -86,16 +86,46 @@ export const checkCompletedSteps = (
       }
 
       break;
-
     case 3:
-      setCompletedSteps(
-        completedSteps.map((step, i) => {
-          if (i === activeStep) return false;
-          return step;
-        })
-      );
+      if (
+        !!formik.values.representativeStreet &
+        !!formik.values.representativeExtNumber &
+        !!formik.values.representativeCP &
+        !!formik.values.representativeDistrict &
+        !!formik.values.representativeMunicipality &
+        !!formik.values.representativeCity &
+        !!formik.values.representativeState &
+        !!formik.values.representativeCountry &
+        !!formik.values.representativePhone &
+        !!formik.values.representativeEmail &
+        !!formik.values.representativeName &
+        !!formik.values.representativeGender &
+        !!formik.values.representativeMaritalStatus &
+        !!formik.values.representativeBirthday &
+        !!formik.values.representativeBirthState &
+        !!formik.values.representativeBirthCountry &
+        !!formik.values.representativeNacionality &
+        !!formik.values.representativeCURP &
+        !!formik.values.representativeRFC &
+        !!formik.values.representativeID
+      ) {
+        setCompletedSteps(
+          completedSteps.map((step, i) => {
+            if (i === activeStep) return true;
+            return step;
+          })
+        );
+      } else {
+        setCompletedSteps(
+          completedSteps.map((step, i) => {
+            if (i === activeStep) return false;
+            return step;
+          })
+        );
+      }
 
       break;
+
     default:
       break;
   }

@@ -4,6 +4,7 @@ import {
   Stepper,
   Grid,
   CircularProgress,
+  FormHelperText,
 } from "@material-ui/core";
 
 import styled from "styled-components";
@@ -159,5 +160,12 @@ export const UploadButton = styled.label`
   :hover {
     color: #000033;
     background-color: white;
+  }
+`;
+
+export const StyledHelperText = styled(FormHelperText)`
+  && {
+    color: #f44336;
+    margin-left: 20px;
   }
 `;

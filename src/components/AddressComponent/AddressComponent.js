@@ -10,27 +10,19 @@ const AddressComponent = ({ title, countries, formik, type }) => {
 
   const fetchCP = async (cp) => {
     const data = await axios.get(
-      `https://apisgratis.com/api/codigospostales/v2/colonias/cp/?valor=${cp}`
+      `https://apis.forcsec.com/api/codigos-postales/20210917-4139fb57a4950b80/${cp}`
     );
-
-    formik.setFieldValue(
-      `${type}Municipality`,
-      JSON.parse(data.data.slice(1))[0].Municipio
-    );
+    console.log(data.data.data.asentamientos);
+    formik.setFieldValue(`${type}Municipality`, data.data.data.municipio);
     formik.setFieldValue(
       `${type}District`,
-      JSON.parse(data.data.slice(1))[0].Colonia
+      data.data.data.asentamientos[0].nombre
     );
-    formik.setFieldValue(
-      `${type}City`,
-      JSON.parse(data.data.slice(1))[0].Ciudad
-    );
-    formik.setFieldValue(
-      `${type}State`,
-      JSON.parse(data.data.slice(1))[0].Entidad
-    );
+    formik.setFieldValue(`${type}City`, data.data.data.asentamientos[0].ciudad);
+    formik.setFieldValue(`${type}State`, data.data.data.estado);
     formik.setFieldValue(`${type}Country`, "Mexico");
-    setDistricts(JSON.parse(data.data.slice(1)).map((d) => d.Colonia));
+
+    setDistricts(data.data.data.asentamientos.map((d) => d.nombre));
   };
 
   return (
@@ -46,9 +38,9 @@ const AddressComponent = ({ title, countries, formik, type }) => {
         <Subtitle>{title}</Subtitle>
 
         <form>
-          <SimpleFormInput size={8} label="Calle">
+          <SimpleFormInput size={10} label="Calle">
             <TextField
-              style={{ margin: 15, width: "100%" }}
+              className="input-width-100"
               size="small"
               required
               label="Calle"
@@ -65,7 +57,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
             <Grid container xs={4}>
               <SimpleFormInput size={12} label="Núm. Exterior">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   label="Núm. Exterior"
@@ -82,7 +74,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
               <SimpleFormInput size={12} label="Núm. Interior">
                 <TextField
                   type="number"
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   label="Núm. Exterior"
                   variant="outlined"
@@ -101,7 +93,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
             <Grid container xs={4}>
               <SimpleFormInput size={12} label="Código Postal">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   label="Código Postal"
@@ -126,7 +118,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
               <SimpleFormInput size={12} label="Colonia">
                 <Autocomplete
                   freeSolo
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   options={districts}
                   size="small"
                   getOptionLabel={(option) => option}
@@ -135,10 +127,14 @@ const AddressComponent = ({ title, countries, formik, type }) => {
                   }}
                   name={`${type}District`}
                   value={formik.values[`${type}District`]}
-                  error={Boolean(formik.errors[`${type}District`])}
-                  helperText={formik.errors[`${type}District`]}
                   renderInput={(params) => (
-                    <TextField {...params} label="Colonia" variant="outlined" />
+                    <TextField
+                      {...params}
+                      label="Colonia"
+                      variant="outlined"
+                      error={Boolean(formik.errors[`${type}District`])}
+                      helperText={formik.errors[`${type}District`]}
+                    />
                   )}
                 />
               </SimpleFormInput>
@@ -146,7 +142,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
             <Grid container xs={4}>
               <SimpleFormInput size={12} label="Delegación o Municipio">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   variant="outlined"
@@ -161,7 +157,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
             <Grid container xs={4}>
               <SimpleFormInput size={12} label="Ciudad o Población">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   variant="outlined"
@@ -179,7 +175,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
             <Grid container xs={4}>
               <SimpleFormInput size={12} label="Entidad o Estado">
                 <TextField
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   size="small"
                   required
                   variant="outlined"
@@ -194,7 +190,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
             <Grid container xs={4}>
               <SimpleFormInput size={12} label="País">
                 <Autocomplete
-                  style={{ margin: 15, width: "80%" }}
+                  className="input-width-80"
                   options={countries}
                   size="small"
                   getOptionLabel={(option) => option}
@@ -203,10 +199,14 @@ const AddressComponent = ({ title, countries, formik, type }) => {
                   }}
                   name={`${type}Country`}
                   value={formik.values[`${type}Country`]}
-                  error={Boolean(formik.errors[`${type}Country`])}
-                  helperText={formik.errors[`${type}Country`]}
                   renderInput={(params) => (
-                    <TextField {...params} label="País" variant="outlined" />
+                    <TextField
+                      {...params}
+                      label="País"
+                      variant="outlined"
+                      error={Boolean(formik.errors[`${type}Country`])}
+                      helperText={formik.errors[`${type}Country`]}
+                    />
                   )}
                 />
               </SimpleFormInput>

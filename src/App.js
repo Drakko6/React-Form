@@ -4,16 +4,7 @@ import { theme } from "./theme";
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        {" "}
+      <div className="container">
         <Users />
       </div>
     </ThemeProvider>

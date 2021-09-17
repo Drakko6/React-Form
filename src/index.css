@@ -15,3 +15,29 @@ code {
 .swal2-container {
   z-index: 1301 !important;
 }
+
+/*  UI Elements*/
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.grid-centered {
+  align-items: center !important;
+  flex-direction: column !important;
+  display: flex !important;
+}
+
+.grid-item-centered {
+  justify-content: center !important;
+  flex-direction: column !important;
+  display: flex !important;
+}
+
+.input-width-80 {
+  margin: 15px !important;
+  width: 80% !important;
+}

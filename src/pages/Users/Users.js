@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import BasicModal from "../../components/BasicModal/BasicModal";
-import { HeadContainer, ButtonContainer, StyledButton } from "./Style";
 import Swal from "sweetalert2";
 import UserForm from "../../components/UserForm/UserForm";
+import BasicModal from "../../components/BasicModal/BasicModal";
+import { HeadContainer, ButtonContainer, StyledButton } from "./Style";
 
 const Users = () => {
   const steps = [
@@ -23,6 +23,7 @@ const Users = () => {
       showDenyButton: true,
       confirmButtonText: "No cerrar",
       denyButtonText: "Cerrar",
+      reverseButtons: true,
     }).then((result) => {
       if (result.isDenied) {
         setShowModal(false);

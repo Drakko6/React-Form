@@ -129,12 +129,12 @@ export const ValidationSchema = yup.object({
       "RFC inválido"
     )
     .required("El RFC es requerido"),
-  representativePhone: "",
+  representativePhone: yup.string().required("El teléfono es requerido"),
   representativeEmail: yup
     .string("Ingresa tu email")
     .email("Email inválido")
     .required("El email es requerido"),
-  representativeID: undefined,
+  representativeID: yup.mixed().required("La identificación es requerida"),
 
   beneficiaryName: yup.string().required("El nombre es requerido"),
   beneficiaryGender: yup.string().required("El género es requerido"),
@@ -148,7 +148,7 @@ export const ValidationSchema = yup.object({
       "CURP inválida"
     )
     .required("La CURP es requerida"),
-  beneficiaryPhone: "",
+  beneficiaryPhone: yup.string().required("El teléfono es requerido"),
   beneficiaryEmail: yup
     .string("Ingresa tu email")
     .email("Email inválido")
