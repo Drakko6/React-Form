@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Grid, TextField } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import { SectionContainer, Subtitle } from "../UserForm/Style";
 import SimpleFormInput from "../SimpleFormInput";
-import axios from "axios";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const AddressComponent = ({ title, countries, formik, type }) => {
   const [districts, setDistricts] = useState([]);
@@ -12,7 +12,6 @@ const AddressComponent = ({ title, countries, formik, type }) => {
     const data = await axios.get(
       `https://apis.forcsec.com/api/codigos-postales/20210917-4139fb57a4950b80/${cp}`
     );
-    console.log(data.data.data.asentamientos);
     formik.setFieldValue(`${type}Municipality`, data.data.data.municipio);
     formik.setFieldValue(
       `${type}District`,
@@ -27,14 +26,7 @@ const AddressComponent = ({ title, countries, formik, type }) => {
 
   return (
     <SectionContainer container xs={12}>
-      <Grid
-        xs={12}
-        style={{
-          alignItems: "center",
-          flexDirection: "column",
-          display: "flex",
-        }}
-      >
+      <Grid xs={12} className="grid-centered">
         <Subtitle>{title}</Subtitle>
 
         <form>

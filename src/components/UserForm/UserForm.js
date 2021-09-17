@@ -252,7 +252,7 @@ const UserForm = ({ steps, setShowModal, setOnSaving, onSaving }) => {
                     disabled={onSaving}
                     onClick={saveUser}
                   >
-                    Guardar información
+                    Guardar
                     {onSaving && (
                       <SavingContainer>
                         <SavingLoading />

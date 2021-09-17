@@ -1,5 +1,3 @@
-import Swal from "sweetalert2";
-
 export const checkCompletedSteps = (
   activeStep,
   completedSteps,
@@ -123,18 +121,8 @@ export const checkCompletedSteps = (
           })
         );
       }
-
       break;
-
     default:
       break;
   }
-};
-
-export const errorAlert = (error, title) => {
-  Swal.fire({
-    icon: "error",
-    title,
-    text: error,
-  });
 };
